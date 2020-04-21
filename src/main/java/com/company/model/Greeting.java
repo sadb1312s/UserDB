@@ -141,14 +141,12 @@ public class Greeting {
 
     @Override
     public String toString() {
-        return "Greeting{" +
-                "surname='" + surname + '\'' +
+        return  "surname='" + surname + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
+                ", age='" + age + '\'' +
+                ", salary='" + salary + '\'' +
                 ", email='" + email + '\'' +
-                ", workPlace='" + workPlace + '\'' +
-                '}';
+                ", workPlace='" + workPlace + '\'';
     }
 }

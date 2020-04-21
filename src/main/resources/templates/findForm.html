@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>User add form</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+</head>
+
+<body>
+    <h1>find form</h1>
+
+    <form action="#" th:action="@{/findForm}" th:object="${findForm}" method="post">
+        <p>Input <input type="text" th:field="*{value}"></p>
+        <p>Active checkBox = search for name, disable for surname<input type="checkbox" name="forName" th:checked="*{forName}" ></p>
+        <p><input type="submit" value="Search"/></p></p>
+
+    </form>
+
+
+</body>
+</html>

@@ -4,6 +4,7 @@ package com.company.databaseutil;
 import com.company.model.Greeting;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.tags.EscapeBodyTag;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -17,11 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 //very simply db, write date to file
 public class MyDataBase {
-    private static final String attributeDelimiter = " ";
+    private static final String attributeDelimiter = "', ";
     private static final String recordDelimiter = "\n";
     private static final String dbName = "db.txt";
     private static final String uploadDir = "upload\\";
@@ -50,6 +52,7 @@ public class MyDataBase {
         }
     }
 
+    //need rewrite
     private void createFile(){
         try {
             dataBase.createNewFile();
@@ -99,6 +102,7 @@ public class MyDataBase {
             Path path = Paths.get(dir + uploadDir + fileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             parseUploadFile(path.toFile());
+            Files.delete(path);
         } catch (IOException e) {
             addResult.append(e.getMessage());
             e.printStackTrace();
@@ -118,10 +122,9 @@ public class MyDataBase {
 
     private boolean write(Greeting greeting){
         boolean add = false;
-        //serializable or externalize maybe
 
         try (FileWriter writer = new FileWriter(dataBase,true)){
-            String record = formRecord(greeting);
+            String record = greeting.toString();
 
             if(equalsRecordCheck(record)){
                 writer.write(record);
@@ -167,27 +170,29 @@ public class MyDataBase {
     //read uploaded file and check records
     private void parseUploadFile(File file){
 
-        try {
-            Scanner s = new Scanner(file);
+        try (Scanner s = new Scanner(file)){
+
 
             List<String> attributes;
             List<Greeting> goodData = new ArrayList<>();
 
             int addCount = 0;
+            int fileRecCount = 0;
 
             while (s.hasNextLine()){
 
                 String str = s.nextLine();
 
-                if(!str.substring(0,1).contains(comment)) {
-                    attributes = new ArrayList<>(Arrays.asList(str.split(" ")));
+                if(str.length() != 0 && !str.substring(0,1).contains(comment)) {
+                    fileRecCount++;
+                    attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
                     if (attributes.size() == Greeting.attributeCount) {
+                        attributes = attributes.stream().map(rec->rec.substring(rec.indexOf("'") + 1,rec.lastIndexOf("'"))).collect(Collectors.toList());
                         Greeting g = new Greeting(attributes);
 
                         if (g.validate()) {
                             goodData.add(g);
-                            addCount++;
                         }else {
                             addResult.append(str + " : "+invalidRecord);
                         }
@@ -199,24 +204,16 @@ public class MyDataBase {
 
             }
 
-            goodData.forEach(this::write);
+            for(Greeting g : goodData){
+                if(write(g)){
+                    addCount++;
+                }
+            }
+            addResult.append("add "+addCount+" record from "+fileRecCount);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private String formRecord(Greeting greeting){
-        StringBuilder builder = new StringBuilder();
-        builder.append(greeting.getSurname() + attributeDelimiter);
-        builder.append(greeting.getFirstname() + attributeDelimiter);
-        builder.append(greeting.getPatronymic() + attributeDelimiter);
-        builder.append(greeting.getAge() + attributeDelimiter);
-        builder.append(greeting.getSalary() + attributeDelimiter);
-        builder.append(greeting.getEmail() + attributeDelimiter);
-        builder.append(greeting.getWorkPlace());
-
-        return builder.toString();
     }
 
     private boolean equalsRecordCheck(String record) throws IOException{
@@ -230,5 +227,35 @@ public class MyDataBase {
         }
 
         return true;
+    }
+
+    public String search(String value, String fieldName){
+        //System.out.println("find "+value+" "+fieldName);
+
+        List<String> attributes;
+
+        StringBuilder found = new StringBuilder();
+
+        try(Scanner s = new Scanner(dataBase)){
+
+            while (s.hasNextLine()) {
+                String str = s.nextLine();
+                attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
+
+                String recVal = attributes.stream().filter(s1 -> s1.substring(0,s1.indexOf("=")).equals(fieldName)).collect(Collectors.toList()).get(0);
+                //System.out.println(recVal);
+
+                if(recVal.equals(fieldName+"='"+value+"'")){
+                    //System.out.println("!!");
+                    found.append(str+"<br />");
+                }
+
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return found.toString();
     }
 }

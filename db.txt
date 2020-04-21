@@ -1,12 +1,6 @@
-//record format : field 1 + attributeDelimiter + field2 ... + fieldN + recordDelimiter
-//field 1 : surname type= String
-//field 2 : firstname type= String
-//field 3 : patronymic type= String
-//field 4 : age type= int
-//field 5 : salary type= int
-//field 6 : email type= String
-//field 7 : workPlace type= String
-//Attribute delimiter = ' '
-//Record delimiter = '\n'Ялышев АндрейQ Альбертович 22 1000 A@mail.com blabla
-Зубенко Михаил Петрович 22 1000 A@mail.com blabla
-Путин Владимир Владимирович 70 1000000 kriml@mail.ru rf goverment
+surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='100000', email='andreyalyshev52@gmail.com', workPlace='ООО ПАО'
+surname='Зубеко', firstname='Михаил', patronymic='Петрович', age='50', salary='1000000', email='andreyalyshev52@gmail.com', workPlace='Мафиозник'
+surname='Кей', firstname='Хорстман', patronymic='хз', age='50', salary='10000000', email='andreyalyshev52@gmail.com', workPlace='java'
+surname='das', firstname='dsa', patronymic='das', age='500', salary='100500000', email='132@gmail.com', workPlace='132java'
+surname='Иванов', firstname='Иван', patronymic='Иванович', age='500', salary='100500000', email='132@gmail.com', workPlace='132java'
+surname='ВЫФВ', firstname='выФВФЫ', patronymic='ЫВФЫВФЫ', age='213', salary='123', email='andreyalyshev52@gmail.com', workPlace='21312'
