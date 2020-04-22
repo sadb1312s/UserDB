@@ -2,8 +2,6 @@ package com.company.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import com.company.databaseutil.*;
 
 public class User {
     public static final int attributeCount = 7;
@@ -16,7 +14,7 @@ public class User {
     private String email;
     private String workPlace;
 
-    private String checkResult;
+    private String checkResult = "";
 
     public User(){
 
@@ -68,7 +66,7 @@ public class User {
         }
 
         if(list.size() != 0) {
-            checkResult = this +" : "+list.stream().collect(Collectors.joining(", "));
+            checkResult = this +" : "+ String.join(", ", list);
             return false;
         } else {
             return true;

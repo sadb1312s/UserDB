@@ -28,8 +28,8 @@ public class MyDataBase {
     private static final String errorMessage = "such record already exists <br />";
     private static final String invalidRecord = "invalid record  <br />";
 
-    private String dir;
-    private String path;
+    private final String dir;
+    private final String path;
     private File dataBase;
     private StringBuilder addResult;
 
@@ -78,7 +78,7 @@ public class MyDataBase {
         if(user.validate()) {
             write(user);
         }else {
-            addResult.append(user+" : "+user.getCheckResult());
+            addResult.append(user).append(" : ").append(user.getCheckResult());
         }
     }
 
@@ -130,21 +130,16 @@ public class MyDataBase {
                 writer.write(record);
                 writer.write(recordDelimiter);
 
-                addResult.append(user +" : " + successMessage);
+                addResult.append(user).append(" : ").append(successMessage);
                 add = true;
             }else {
-                addResult.append(user + " : " + errorMessage);
+                addResult.append(user).append(" : ").append(errorMessage);
             }
 
-        } catch (FileNotFoundException e) {
-            addResult.append(e.getMessage() + "<br />");
-            e.printStackTrace();
         } catch (IOException e) {
-            addResult.append(e.getMessage() + "<br />");
+            addResult.append(e.getMessage()).append("<br />");
             e.printStackTrace();
         }
-
-
 
         user.setCheckResult(addResult.toString());
 
@@ -190,11 +185,11 @@ public class MyDataBase {
                         if (g.validate()) {
                             goodData.add(g);
                         }else {
-                            addResult.append(str + " : "+invalidRecord);
+                            addResult.append(str).append(" : ").append(invalidRecord);
                         }
 
                     }else {
-                        addResult.append(str + " : "+invalidRecord);
+                        addResult.append(str).append(" : ").append(invalidRecord);
                     }
                 }
 
@@ -205,21 +200,28 @@ public class MyDataBase {
                     addCount++;
                 }
             }
-            addResult.append("add "+addCount+" record from "+fileRecCount);
+            addResult.append("add ").append(addCount).append(" record from ").append(fileRecCount);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private boolean equalsRecordCheck(String record) throws IOException{
-        Scanner scanner = new Scanner(dataBase);
+    private boolean equalsRecordCheck(String record){
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(dataBase);
 
-        while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()){
 
-            if(scanner.nextLine().equals(record)){
-                return false;
+                if(scanner.nextLine().equals(record)){
+                    return false;
+                }
             }
+
+        } catch (FileNotFoundException e) {
+            addResult.append(e.getMessage()).append("<br />");
+            e.printStackTrace();
         }
 
         return true;
@@ -239,7 +241,7 @@ public class MyDataBase {
                 String recVal = attributes.stream().filter(s1 -> s1.substring(0,s1.indexOf("=")).equals(fieldName)).collect(Collectors.toList()).get(0);
 
                 if(recVal.equals(desired)){
-                    found.append(str+"<br />");
+                    found.append(str).append("<br />");
                 }
 
             }

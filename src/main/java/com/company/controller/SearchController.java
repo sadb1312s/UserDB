@@ -1,18 +1,11 @@
 package com.company.controller;
 
 import com.company.model.Search;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.stream.Collectors;
 
 import static com.company.SpringBootStarter.dataBase;
 

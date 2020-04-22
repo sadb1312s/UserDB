@@ -1,9 +1,5 @@
 package com.company.model;
 
-
-import java.lang.reflect.Field;
-import java.util.List;
-
 public class Search {
     private String value;
     private String forName;
