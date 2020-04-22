@@ -1,14 +1,18 @@
 package com.company.controller;
 
-import com.company.model.Greeting;
 import com.company.model.Search;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 import static com.company.SpringBootStarter.dataBase;
 
@@ -22,20 +26,32 @@ public class SearchController {
     }
 
     @PostMapping("/findForm")
-    public String searchSubmit(@ModelAttribute Search search){
+    public String searchSubmit(@ModelAttribute Search search, HttpServletRequest request){
 
+
+        Date date = new Date();
+        System.out.println("---> " + date);
 
         String result;
-        if(search.getForName()!=null){
-            result = dataBase.search(search.getValue(),"firstname");
+        String whatSearch;
+
+        if(search.getForName() == null){
+            whatSearch = "surname";
         }else {
-            result =  dataBase.search(search.getValue(),"surname");
+            whatSearch = "firstname";
+        }
+
+        result = dataBase.search(search.getValue(),whatSearch);
+
+        if(result.equals("")){
+            result = "no found";
+        }else {
+            String userAgent = request.getHeader("User-Agent");
+            result += " user-agent: " + userAgent + "<br />request time:"+date;
         }
 
 
         search.setSearchResult(result);
-
-
         return "searchResult";
     }
 }

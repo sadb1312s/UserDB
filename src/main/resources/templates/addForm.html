@@ -9,7 +9,7 @@
 
 <body>
     <h1>Fill in data</h1>
-    <form action="#" th:action="@{/greeting}" th:object="${greeting}" method="post">
+    <form action="#" th:action="@{/addForm}" th:object="${addForm}" method="post">
         <p>Surname <input type="text" th:field="*{surname}"></p>
         <p>First name <input type="text" th:field="*{firstname}"></p>
         <p>Patronymic <input type="text" th:field="*{patronymic}"></p>
@@ -27,6 +27,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Upload File</button>
     </form>
+
+    <a href="/myDB">Main form</a>
 
 
 </body>

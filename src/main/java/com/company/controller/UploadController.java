@@ -1,7 +1,6 @@
 package com.company.controller;
 
-import com.company.databaseutil.MyDataBase;
-import com.company.model.Greeting;
+import com.company.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,14 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.company.SpringBootStarter.dataBase;
 
 @Controller
-public class FileGreetingController {
+public class UploadController {
 
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, Greeting g) {
+    public String uploadFile(@RequestParam("file") MultipartFile file, User user) {
 
 
-        dataBase.writeRecord(file,g);
+        dataBase.writeRecord(file,user);
 
         return "result";
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.company.databaseutil.*;
 
-public class Greeting {
+public class User {
     public static final int attributeCount = 7;
 
     private String surname;
@@ -18,11 +18,11 @@ public class Greeting {
 
     private String checkResult;
 
-    public Greeting(){
+    public User(){
 
     }
 
-    public Greeting(List<String> attributes) {
+    public User(List<String> attributes) {
         surname = attributes.get(0);
         firstname = attributes.get(1);
         patronymic = attributes.get(2);
@@ -73,6 +73,8 @@ public class Greeting {
         } else {
             return true;
         }
+
+
     }
 
     public String getSurname() {

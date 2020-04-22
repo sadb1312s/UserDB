@@ -12,9 +12,11 @@
     <form action="#" th:action="@{/findForm}" th:object="${findForm}" method="post">
         <p>Input <input type="text" th:field="*{value}"></p>
         <p>Active checkBox = search for name, disable for surname<input type="checkbox" name="forName" th:checked="*{forName}" ></p>
-        <p><input type="submit" value="Search"/></p></p>
+        <p><input type="submit" value="Search"/></p>
 
     </form>
+
+    <a href="/myDB">Main form</a>
 
 
 </body>

@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Result of submission</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Search info</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
-
-
 <body>
+    <h1>Search result</h1>
     <form action="#" th:action="@{/findForm}" th:object="${findForm}" method="get">
-        <h1>Search result</h1>
-        <p th:text="${findForm.searchResult}" />
-        <a href="/findForm">Submit another message</a>
+        <p th:utext="${search.searchResult}" />
+        <a href="/findForm">Search another</a>
+
+        <br/>
+        <a href="/myDB">Main form</a>
     </form>
 </body>
 

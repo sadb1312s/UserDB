@@ -1,12 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Add info</title>
+    <title>Submit info</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+
 <body>
-<h1>Result</h1>
-<p th:utext="'Add result: ' + ${greeting.checkResult}" />
-<a href="/greeting">Submit another message</a>
+    <h1>Submission result</h1>
+
+    <p th:utext="${user.checkResult}" />
+    <a href="/addForm">Add another user</a>
+
+    <br/>
+    <a href="/myDB">Main form</a>
+
 </body>
 </html>

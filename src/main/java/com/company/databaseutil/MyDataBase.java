@@ -1,15 +1,12 @@
 package com.company.databaseutil;
 
 
-import com.company.model.Greeting;
+import com.company.model.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.tags.EscapeBodyTag;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 //very simply db, write date to file
 public class MyDataBase {
@@ -57,7 +53,7 @@ public class MyDataBase {
         try {
             dataBase.createNewFile();
 
-            Field[] fields = Greeting.class.getDeclaredFields();
+            Field[] fields = User.class.getDeclaredFields();
 
             write(comment + "record format : field 1 + attributeDelimiter + field2 ... + fieldN + recordDelimiter");
 
@@ -77,16 +73,20 @@ public class MyDataBase {
         }
     }
 
-    public void writeRecord(Greeting greeting){
+    public void writeRecord(User user){
         addResult = new StringBuilder();
-        write(greeting);
+        if(user.validate()) {
+            write(user);
+        }else {
+            addResult.append(user+" : "+user.getCheckResult());
+        }
     }
 
-    public void writeRecord(MultipartFile file,Greeting greeting){
+    public void writeRecord(MultipartFile file, User user){
         addResult = new StringBuilder();
         //check empty and type of file
         if(!fileCheck(file)){
-            greeting.setCheckResult("invalid file");
+            user.setCheckResult("invalid file");
             return;
         }
 
@@ -108,7 +108,7 @@ public class MyDataBase {
             e.printStackTrace();
         }
 
-        greeting.setCheckResult(addResult.toString());
+        user.setCheckResult(addResult.toString());
     }
 
     private void write(String string){
@@ -120,20 +120,20 @@ public class MyDataBase {
         }
     }
 
-    private boolean write(Greeting greeting){
+    private boolean write(User user){
         boolean add = false;
 
         try (FileWriter writer = new FileWriter(dataBase,true)){
-            String record = greeting.toString();
+            String record = user.toString();
 
             if(equalsRecordCheck(record)){
                 writer.write(record);
                 writer.write(recordDelimiter);
 
-                addResult.append(greeting +" : " + successMessage);
+                addResult.append(user +" : " + successMessage);
                 add = true;
             }else {
-                addResult.append(greeting + " : " + errorMessage);
+                addResult.append(user + " : " + errorMessage);
             }
 
         } catch (FileNotFoundException e) {
@@ -146,7 +146,7 @@ public class MyDataBase {
 
 
 
-        greeting.setCheckResult(addResult.toString());
+        user.setCheckResult(addResult.toString());
 
         return add;
     }
@@ -160,11 +160,7 @@ public class MyDataBase {
         String fileName = file.getOriginalFilename();
         String type = fileName.substring(fileName.lastIndexOf(".") + 1);
 
-        if(!type.equals("txt")){
-            return false;
-        }
-
-        return true;
+        return type.equals("txt");
     }
 
     //read uploaded file and check records
@@ -174,7 +170,7 @@ public class MyDataBase {
 
 
             List<String> attributes;
-            List<Greeting> goodData = new ArrayList<>();
+            List<User> goodData = new ArrayList<>();
 
             int addCount = 0;
             int fileRecCount = 0;
@@ -187,9 +183,9 @@ public class MyDataBase {
                     fileRecCount++;
                     attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
-                    if (attributes.size() == Greeting.attributeCount) {
+                    if (attributes.size() == User.attributeCount) {
                         attributes = attributes.stream().map(rec->rec.substring(rec.indexOf("'") + 1,rec.lastIndexOf("'"))).collect(Collectors.toList());
-                        Greeting g = new Greeting(attributes);
+                        User g = new User(attributes);
 
                         if (g.validate()) {
                             goodData.add(g);
@@ -204,7 +200,7 @@ public class MyDataBase {
 
             }
 
-            for(Greeting g : goodData){
+            for(User g : goodData){
                 if(write(g)){
                     addCount++;
                 }
@@ -230,32 +226,29 @@ public class MyDataBase {
     }
 
     public String search(String value, String fieldName){
-        //System.out.println("find "+value+" "+fieldName);
 
         List<String> attributes;
-
         StringBuilder found = new StringBuilder();
+        String desired = fieldName+"='"+value+"'";
 
         try(Scanner s = new Scanner(dataBase)){
-
             while (s.hasNextLine()) {
                 String str = s.nextLine();
                 attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
                 String recVal = attributes.stream().filter(s1 -> s1.substring(0,s1.indexOf("=")).equals(fieldName)).collect(Collectors.toList()).get(0);
-                //System.out.println(recVal);
 
-                if(recVal.equals(fieldName+"='"+value+"'")){
-                    //System.out.println("!!");
+                if(recVal.equals(desired)){
                     found.append(str+"<br />");
                 }
-
 
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return found.toString();
+        String result = found.toString();
+        System.out.println(result.equals(""));
+        return result;
     }
 }
