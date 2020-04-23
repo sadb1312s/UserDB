@@ -1,4 +1,4 @@
-package com.company.databaseutil;
+package com.company.utils.databaseutil;
 
 
 import com.company.model.User;

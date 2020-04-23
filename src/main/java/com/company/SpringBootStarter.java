@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.databaseutil.MyDataBase;
+import com.company.utils.databaseutil.MyDataBase;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
