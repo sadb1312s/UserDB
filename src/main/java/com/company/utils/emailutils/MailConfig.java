@@ -15,6 +15,8 @@ public class MailConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
+        //i am use gmail and generate password as windows mail service in google account
+        //https://support.google.com/accounts/answer/185833?hl=ru
         mailSender.setUsername("yoor email");
         mailSender.setPassword("your password");
 
