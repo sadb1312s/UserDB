@@ -33,8 +33,6 @@ public class User {
             e.printStackTrace();
         }
 
-        System.out.println("!!!");
-
         email = attributes.get(5);
         workPlace = attributes.get(6);
     }
@@ -42,13 +40,19 @@ public class User {
     public boolean validate(){
         List<String> list = new ArrayList<>();
 
-        if(surname.equals("")){
-            list.add("surname can't be null");
+        if(surname.equals("") || strNumberCheck(surname)){
+            list.add("surname is invalid");
         }
 
-        if(firstname.equals("")){
-            list.add("firstname can't be null");
+
+        if(firstname.equals("") || strNumberCheck(firstname)){
+            list.add("firstname is invalid");
         }
+
+        if(patronymic.equals("") || strNumberCheck(patronymic)){
+            list.add("patronymic is invalid");
+        }
+
 
         if(age <= 0){
             list.add("age can't be <= 0");
@@ -72,6 +76,11 @@ public class User {
             return true;
         }
 
+
+    }
+
+    private boolean strNumberCheck(String str){
+        return str.matches(".*\\d.*");
 
     }
 

@@ -1,10 +1,8 @@
 package com.company.controller;
 
 import com.company.model.Email;
-import com.company.utils.emailutils.MailConfig;
+import com.company.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,8 @@ public class EmailController {
 
     @Autowired
     JavaMailSender emailSender;
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/sendForm")
     public String sendForm(Model model){
@@ -28,17 +28,7 @@ public class EmailController {
     public String sendForm(@ModelAttribute Email email){
         System.out.println(email);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email.getEmail());
-        message.setSubject("Spring boot email");
-        message.setText(email.getText());
-
-        try {
-            emailSender.send(message);
-        }catch (MailException e){
-            email.setSendResult(e.getMessage());
-            e.printStackTrace();
-        }
+        emailService.sendEmail(emailSender,email);
 
         return "sendResult";
     }

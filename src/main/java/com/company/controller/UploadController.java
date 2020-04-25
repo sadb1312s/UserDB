@@ -15,7 +15,6 @@ public class UploadController {
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, User user) {
 
-
         dataBase.writeRecord(file,user);
 
         return "result";

@@ -21,6 +21,7 @@ public class UserController {
     @PostMapping("/addForm")
     public String addFormSubmit(@ModelAttribute User user){
 
+        System.out.println(dataBase);
         dataBase.writeRecord(user);
 
         return "result";

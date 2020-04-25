@@ -6,7 +6,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,24 +47,14 @@ public class MyDataBase {
         }
     }
 
-    //need rewrite
     private void createFile(){
         try {
             dataBase.createNewFile();
 
-            Field[] fields = User.class.getDeclaredFields();
+            write(comment + "record example :");
+            write(comment + "surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', " +
+                    "salary='100000', email='andreyalyshev52@gmail.com', workPlace='ООО ПАО'" );
 
-            write(comment + "record format : field 1 + attributeDelimiter + field2 ... + fieldN + recordDelimiter");
-
-            int i = 1;
-            for(Field field : fields){
-                if(!field.getName().equals("attributeCount") && !field.getName().equals("checkResult") ) {
-                    write(comment + "field "+ i + " : " + field.getName() + " type= " + field.getType().getSimpleName());
-                    i++;
-                }
-            }
-
-            write(comment + "Attribute delimiter = '" + attributeDelimiter + "'");
             write(comment + "Record delimiter = '\\n'");
 
         } catch (IOException e) {
@@ -155,14 +144,13 @@ public class MyDataBase {
         String fileName = file.getOriginalFilename();
         String type = fileName.substring(fileName.lastIndexOf(".") + 1);
 
-        return type.equals("txt");
+        return "txt".equals(type);
     }
 
     //read uploaded file and check records
     private void parseUploadFile(File file){
 
         try (Scanner s = new Scanner(file)){
-
 
             List<String> attributes;
             List<User> goodData = new ArrayList<>();
@@ -174,12 +162,15 @@ public class MyDataBase {
 
                 String str = s.nextLine();
 
-                if(str.length() != 0 && !str.substring(0,1).contains(comment)) {
+                if(str.length() != 0 && !str.substring(0,2).equals(comment)) {
                     fileRecCount++;
                     attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
                     if (attributes.size() == User.attributeCount) {
-                        attributes = attributes.stream().map(rec->rec.substring(rec.indexOf("'") + 1,rec.lastIndexOf("'"))).collect(Collectors.toList());
+                        attributes = attributes.stream()
+                                .map(rec->rec.substring(rec.indexOf("'") + 1,rec.lastIndexOf("'")))
+                                .collect(Collectors.toList());
+
                         User g = new User(attributes);
 
                         if (g.validate()) {
@@ -208,7 +199,7 @@ public class MyDataBase {
     }
 
     private boolean equalsRecordCheck(String record){
-        Scanner scanner = null;
+        Scanner scanner;
         try {
             scanner = new Scanner(dataBase);
 
@@ -236,12 +227,17 @@ public class MyDataBase {
         try(Scanner s = new Scanner(dataBase)){
             while (s.hasNextLine()) {
                 String str = s.nextLine();
-                attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
-                String recVal = attributes.stream().filter(s1 -> s1.substring(0,s1.indexOf("=")).equals(fieldName)).collect(Collectors.toList()).get(0);
+                if (!str.substring(0,2).equals(comment)) {
+                    attributes = new ArrayList<>(Arrays.asList(str.split(", ")));
 
-                if(recVal.equals(desired)){
-                    found.append(str).append("<br />");
+                    String recVal = attributes.stream().
+                            filter(s1 -> s1.substring(0, s1.indexOf("=")).equals(fieldName)).
+                            collect(Collectors.toList()).get(0);
+
+                    if (recVal.equals(desired)) {
+                        found.append(str).append("<br />");
+                    }
                 }
 
             }
@@ -249,8 +245,6 @@ public class MyDataBase {
             e.printStackTrace();
         }
 
-        String result = found.toString();
-        System.out.println(result.equals(""));
-        return result;
+        return found.toString();
     }
 }

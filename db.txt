@@ -1,10 +1,15 @@
+//record example :
+//surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='100000', email='andreyalyshev52@gmail.com', workPlace='ООО ПАО'
+//Record delimiter = '\n'
+
 surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='100000', email='andreyalyshev52@gmail.com', workPlace='ООО ПАО'
 surname='Зубенко', firstname='Михаил', patronymic='Петрович', age='50', salary='1000000', email='andreyalyshev52@gmail.com', workPlace='Мафиозник'
 surname='Кей', firstname='Хорстман', patronymic='хз', age='50', salary='10000000', email='andreyalyshev52@gmail.com', workPlace='java'
 surname='das', firstname='dsa', patronymic='das', age='500', salary='100500000', email='132@gmail.com', workPlace='132java'
 surname='Иванов', firstname='Иван', patronymic='Иванович', age='500', salary='100500000', email='132@gmail.com', workPlace='132java'
 surname='ВЫФВ', firstname='выФВФЫ', patronymic='ЫВФЫВФЫ', age='213', salary='123', email='andreyalyshev52@gmail.com', workPlace='21312'
-surname='132', firstname='1231231', patronymic='312312', age='52', salary='34', email='andreyalyshev52@gmail.com', workPlace='1312312'
 surname='Альбертович', firstname='Ялышев', patronymic='Иванович', age='50', salary='50', email='andreyalyshev52@gmail.com', workPlace='плейс'
-surname='Альбертович', firstname='Ялышев31212', patronymic='Иванович', age='50', salary='50', email='andreyalyshev52@gmail.com', workPlace='плейс'
 surname='Фамилов', firstname='Имя', patronymic='Отчетсвович', age='22', salary='100500', email='andreyalyshev52@gmail.com', workPlace='ООО ПАО'
+surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='1000', email='andreyalyshev52@gmail.com', workPlace='24'
+surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='1000', email='andreyalyshev52@gmail.com', workPlace='плейс'
+surname='Ялышев', firstname='Андрей', patronymic='Альбертович', age='22', salary='10000', email='andreyalyshev52@gmail.com', workPlace='плейс'
