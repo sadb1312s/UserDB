@@ -1,13 +1,13 @@
 package com.company.service;
 
 import com.company.model.Search;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 import static com.company.SpringBootStarter.dataBase;
 
-@Configuration
+@Service
 public class SearchService {
 
     public void search(Search search, String userAgent){

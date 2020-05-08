@@ -1,13 +1,12 @@
 package com.company.service;
 
-
 import com.company.model.Email;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
-@Configuration
+@Service
 public class EmailService {
 
     public void sendEmail(JavaMailSender emailSender, Email email) {
